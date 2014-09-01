@@ -3,7 +3,8 @@ require 'sinatra/base'
 require 'em-websocket'
 
 EventMachine.run do
-  class App < Sinatra::Base
+  puts "This is process #{Process.pid}"
+  class App < Sinatra::Application
     get '/' do
       erb :index
     end
@@ -11,7 +12,7 @@ EventMachine.run do
 
   @clients = []
 
-  EM::WebSocket.start(:host => '0.0.0.0', :port => '3001') do |ws|
+  EM::WebSocket.start(:host => '0.0.0.0', :port => '6010') do |ws|
     ws.onopen do |handshake|
       @clients << ws
       ws.send "Connected to #{handshake.path}."
@@ -19,7 +20,7 @@ EventMachine.run do
 
     ws.onclose do
       ws.send "Closed!"
-      @clients.delete ws
+      @clients.exit ws
     end
 
     ws.onmessage do |msg|
@@ -30,5 +31,5 @@ EventMachine.run do
     end
   end
 
-  App.run! :port => 3000
+  App.run! :port => 6016
 end
