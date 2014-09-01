@@ -13,7 +13,7 @@ EventMachine.run do
 
   EM::WebSocket.start(:host => '0.0.0.0', :port => '3001') do |ws|
     ws.onopen do |handshake|
-      @clients &lt;&lt; ws
+      @clients << ws
       ws.send "Connected to #{handshake.path}."
     end
 
