@@ -11,5 +11,7 @@
   <button id="disconnect">Desconectar</button>
 </div>
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>function connect(){try{socket=new WebSocket(host);addMessage("Socket State: "+socket.readyState);socket.onopen=function(){addMessage("Socket Status: "+socket.readyState+" (open)")};socket.onclose=function(){addMessage("Socket Status: "+socket.readyState+" (closed)")};socket.onmessage=function(e){addMessage("Received: "+e.data)}}catch(e){addMessage("Error: "+e)}}function addMessage(e){$("#chat-log").append("<p>"+e+"</p>")}function send(){var e=$("#message").val();if(e==""){addMessage("Please Enter a Message");return}try{socket.send(e);addMessage("Sent: "+e)}catch(t){addMessage("Failed To Send")}$("#message").val("")}var socket,host;host="ws://localhost:3001";$(function(){connect()});$("#message").keypress(function(e){if(e.keyCode=="13"){send()}});$("#disconnect").click(function(){socket.close()})</script>
 </body>
 </html>
